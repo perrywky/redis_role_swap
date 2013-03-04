@@ -2,7 +2,7 @@
 # 
 # Redis role swap
 #
-#
+
 require 'rubygems'
 require 'redis'
 require 'statemachine'
