@@ -1,0 +1,16 @@
+GEM
+  remote: http://rubygems.org/
+  specs:
+    choice (0.1.6)
+    colorize (0.5.8)
+    redis (3.0.3)
+    statemachine (2.1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  choice
+  colorize
+  redis
+  statemachine
