@@ -58,6 +58,7 @@ end
 
 FLOATING_IP = CONFIG['floating_ip']
 FLOATING_IP_CIDR = CONFIG['floating_ip_cidr']
+INTERFACE = CONFIG['interface']
 MASTER_IPMI_ADDRESS = CONFIG['master_ipmi_address']
 SSH_USER = CONFIG['ssh_user']
 if CONFIG['ssh_identify_file'] then
@@ -132,22 +133,9 @@ class MyRedis < Redis
 
     def arping
         if self.options['host'] == `hostname`.chomp
-            `sudo #{self.arping_path} -U -c 4 -I bond0 #{FLOATING_IP}`
+            `sudo #{self.arping_path} -U -c 4 -I #{INTERFACE} #{FLOATING_IP}`
         else
-            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo #{self.arping_path} -U -c 4 -I bond0 #{FLOATING_IP}'`
-        end
-        if $?.exitstatus == 0
-            true
-        else
-            false
-        end
-    end
-
-    def self.add_vip
-        if self.options['host'] == `hostname`.chomp
-            `sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0`
-        else
-            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0'`
+            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo #{self.arping_path} -U -c 4 -I #{INTERFACE} #{FLOATING_IP}'`
         end
         if $?.exitstatus == 0
             true
@@ -158,9 +146,9 @@ class MyRedis < Redis
 
     def remove_vip
         if self.options['host'] == `hostname`.chomp
-            `sudo /sbin/ip addr del #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0`
+            `sudo /sbin/ip addr del #{FLOATING_IP}#{FLOATING_IP_CIDR} dev #{INTERFACE}`
         else
-            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo /sbin/ip addr del #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0'`
+            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo /sbin/ip addr del #{FLOATING_IP}#{FLOATING_IP_CIDR} dev #{INTERFACE}'`
         end
         if $?.exitstatus == 0
             true
@@ -171,9 +159,9 @@ class MyRedis < Redis
 
     def add_vip
         if self.options['host'] == `hostname`.chomp
-            `sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0`
+            `sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev #{INTERFACE}`
         else
-            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev bond0'`
+            `ssh #{SSH_USER}@#{self.options['host']} #{SSH_OPTIONS} 'sudo /sbin/ip addr add #{FLOATING_IP}#{FLOATING_IP_CIDR} dev #{INTERFACE}'`
         end
         if $?.exitstatus == 0
             true

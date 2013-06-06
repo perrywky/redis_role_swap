@@ -1,5 +1,6 @@
 floating_ip: 10.1.1.1
 floating_ip_cidr: /24
+interface: eth0
 ssh_user: root # defaults: root
 ssh_identify_file: NULL # defaults: do not use
 
